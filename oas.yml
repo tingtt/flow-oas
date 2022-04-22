@@ -1009,6 +1009,26 @@ paths:
         500:
           description: Internal server error
 
+  #
+  # /mock
+  #
+
+  /mock/migrate:
+    post:
+      responses:
+        201:
+          description: Created
+        500:
+          description: Internal server error
+
+  /mock/clear:
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
 components:
   schemas:
     #
