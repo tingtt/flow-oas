@@ -1,0 +1,2127 @@
+openapi: 3.0.0
+
+info:
+  description: |
+    You can find out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: "2.0.0"
+  title: "flow API"
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+security:
+  - Bearer: []
+
+tags: []
+
+paths:
+  #
+  # /users
+  #
+
+  /users/:
+    post:
+      security: []
+      requestBody:
+        $ref: "#/components/requestBodies/CreateUser"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserWithoutPassword"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    get:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateUser"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserWithoutPassword"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  /users/{oauth_providers}/register:
+    post:
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/oauth_providers"
+      requestBody:
+        $ref: "#/components/requestBodies/OAuth2Connect"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserWithoutPassword"
+        500:
+          description: Internal server error
+
+  /users/{oauth_providers}/connect:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/oauth_providers"
+      requestBody:
+        $ref: "#/components/requestBodies/CreateUserOverOauth2"
+      responses:
+        200:
+          description: Success
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  /users/{oauth_providers}/refresh:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/oauth_providers"
+      responses:
+        200:
+          description: Success
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  /users/{oauth_providers}:
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/oauth_providers"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  /users/sign_in:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/Login"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenBody"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+  /users/id:
+    get:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserId"
+
+  #
+  # /projects
+  #
+
+  /projects/:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateProject"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/show_hidden"
+        - $ref: "#/components/parameters/embed"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/Project"
+                    - $ref: "#/components/schemas/ProjectSubEmbed"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+  /projects/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/embed"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ProjectSubEmbed"
+                  - $ref: "#/components/schemas/Project"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateProject"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  #
+  # /sprints
+  #
+
+  /sprints/:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateSprint"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sprint"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/project_id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Sprint"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+  /sprints/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sprint"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateSprint"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sprint"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  #
+  # /todos
+  #
+
+  /todos/:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateTodo"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/project_id"
+        - $ref: "#/components/parameters/with_completed"
+        - $ref: "#/components/parameters/with_repeat_schedules"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/Todo"
+                    - $ref: "#/components/schemas/RepeatSchedule"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+  /todos/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateTodo"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  #
+  # /pomodoro
+  #
+
+  /pomodoro/start:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/StartPomodoro"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PomodoroLogStarted"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+  /pomodoro/end:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/EndPomodoro"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PomodoroLog"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+  /pomodoro/:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/project_id"
+        - $ref: "#/components/parameters/include_sub_project"
+        - $ref: "#/components/parameters/todo_id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PomodoroLog"
+        400:
+          description: Invalid request
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+  /pomodoro/aggregated:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/project_id"
+        - $ref: "#/components/parameters/include_sub_project"
+        - $ref: "#/components/parameters/aggregation_range"
+        - $ref: "#/components/parameters/aggregate_sub_project"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AggregatedPomodoro"
+        400:
+          description: Invalid request
+        500:
+          description: Internal server error
+
+  #
+  # /records
+  #
+
+  /records/:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateRecords"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/RecordChangelogEmbed"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/RecordChangelogEmbed"
+        400:
+          description: Invalid request
+        409:
+          description: Conflict
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    put:
+      parameters:
+        - $ref: "#/components/parameters/todo_id_required"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateRecords"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/RecordChangelogEmbed"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/RecordChangelogEmbed"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        409:
+          description: Conflict
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/todo_id"
+        - $ref: "#/components/parameters/scheme_id"
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/record_embed"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecordChangelogEmbed"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+  /records/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordChangelogEmbed"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateRecord"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordChangelogEmbed"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        409:
+          description: Conflict
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  /records/changelogs:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateChangelog"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Changelog"
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/todo_id"
+        - $ref: "#/components/parameters/scheme_id"
+        - $ref: "#/components/parameters/project_id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Changelog"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+  /records/changelogs/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Changelog"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateChangelog"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Changelog"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        409:
+          description: Conflict
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  /records/schemes:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateScheme"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scheme"
+        400:
+          description: Invalid request
+        409:
+          description: Conflict
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/project_id"
+        - $ref: "#/components/parameters/scheme_embed"
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/Scheme"
+                    - $ref: "#/components/schemas/SchemeRecordEmbed"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+  /records/schemes/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/scheme_embed"
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/SchemeRecordEmbed"
+                  - $ref: "#/components/schemas/Scheme"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateScheme"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scheme"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        409:
+          description: Conflict
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+  #
+  # /documents
+  #
+
+  /documents/:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/CreateDocument"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        400:
+          description: Invalid request
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    get:
+      parameters:
+        - $ref: "#/components/parameters/project_id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+        204:
+          description: No content
+        500:
+          description: Internal server error
+
+    delete:
+      responses:
+        204:
+          description: Deleted
+        500:
+          description: Internal server error
+
+  /documents/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+    patch:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateDocument"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        400:
+          description: Invalid request
+        404:
+          description: Not found
+        415:
+          description: Unsupported media type
+        422:
+          description: Unprocessable entity
+        500:
+          description: Internal server error
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    #
+    # /users
+    #
+
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - email
+        - password
+    TokenBody:
+      type: object
+      properties:
+        token:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    UserWithoutPassword:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+
+    CreateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - name
+        - email
+        - password
+
+    UpdateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    OAuth2ConnectBody:
+      type: object
+      properties:
+        access_token:
+          type: string
+        expire_in:
+          type: integer
+        refresh_token:
+          type: string
+        refresh_token_expire_in:
+          type: integer
+      required:
+        - access_token
+        - expire_in
+        - refresh_token
+
+    CreateUserOverOauth2Body:
+      type: object
+      properties:
+        access_token:
+          type: string
+        expire_in:
+          type: integer
+        refresh_token:
+          type: string
+        refresh_token_expire_in:
+          type: integer
+        password:
+          type: string
+      required:
+        - access_token
+        - expire_in
+        - refresh_token
+        - password
+
+    UserId:
+      type: object
+      properties:
+        id:
+          type: integer
+
+    #
+    # /projects
+    #
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        theme_color:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: 42a5f5
+        parent_id:
+          type: integer
+        pinned:
+          type: boolean
+          default: false
+        order:
+          type: integer
+        hidden:
+          type: boolean
+          default: false
+
+    ProjectSubEmbed:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        theme_color:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: 42a5f5
+        pinned:
+          type: boolean
+          default: false
+        order:
+          type: integer
+        hidden:
+          type: boolean
+          default: false
+        sub_projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+
+    CreateProjectBody:
+      type: object
+      properties:
+        name:
+          type: string
+        theme_color:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: 42a5f5
+        parent_id:
+          type: integer
+        pinned:
+          type: boolean
+        order:
+          type: integer
+      required:
+        - name
+
+    UpdateProjectBody:
+      type: object
+      properties:
+        name:
+          type: string
+        theme_color:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: 42a5f5
+        parent_id:
+          type: integer
+        pinned:
+          type: boolean
+        order:
+          type: integer
+        hidden:
+          type: boolean
+
+    #
+    # /sprints
+    #
+
+    Sprint:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        project_id:
+          type: integer
+
+    CreateSprintBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        project_id:
+          type: integer
+      required:
+        - name
+        - start
+        - end
+
+    UpdateSprintBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        project_id:
+          type: integer
+
+    #
+    # /todos
+    #
+
+    Todo:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          pattern: '^\d{2}:\d{2}$'
+          example: "09:00"
+        execution_time:
+          type: integer
+        sprint_id:
+          type: integer
+        project_id:
+          type: integer
+        completed:
+          type: boolean
+          default: false
+        repeat:
+          type: object
+          properties:
+            until:
+              type: string
+              format: date
+            unit:
+              type: string
+              enum:
+                - day
+                - week
+                - month
+            every_other:
+              type: integer
+            days:
+              type: array
+              items:
+                type: object
+                properties:
+                  day:
+                    type: integer
+                    minimum: 0
+                    maximum: 6
+                  time:
+                    type: string
+                    pattern: '^\d{2}:\d{2}$'
+                    example: "09:00"
+    RepeatSchedule:
+      type: object
+      properties:
+        original_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          pattern: '^\d{2}:\d{2}$'
+          example: "09:00"
+        execution_time:
+          type: integer
+        sprint_id:
+          type: integer
+        project_id:
+          type: integer
+        completed:
+          type: boolean
+          default: false
+
+    CreateTodoBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          pattern: '^\d{2}:\d{2}$'
+          example: "09:00"
+        execution_time:
+          type: integer
+        sprint_id:
+          type: integer
+        project_id:
+          type: integer
+        repeat:
+          type: object
+          properties:
+            until:
+              type: string
+              format: date
+            unit:
+              type: string
+              enum:
+                - day
+                - week
+                - month
+              default: day
+            every_other:
+              type: integer
+            days:
+              type: array
+              items:
+                type: object
+                properties:
+                  day:
+                    type: integer
+                    minimum: 0
+                    maximum: 6
+                  time:
+                    type: string
+                    pattern: '^\d{2}:\d{2}$'
+                    example: "09:00"
+      required:
+        - name
+
+    UpdateTodoBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        datetime:
+          type: string
+          format: date-time
+        execution_time:
+          type: integer
+        sprint_id:
+          type: integer
+        project_id:
+          type: integer
+        completed:
+          type: boolean
+          default: false
+        repeat:
+          type: object
+          properties:
+            until:
+              type: string
+              format: date
+            unit:
+              type: string
+              enum:
+                - day
+                - week
+                - month
+              default: day
+            every_other:
+              type: integer
+            days:
+              type: array
+              items:
+                type: object
+                properties:
+                  day:
+                    type: integer
+                    minimum: 0
+                    maximum: 6
+                  time:
+                    type: string
+                    pattern: '^\d{2}:\d{2}$'
+
+    #
+    # /pomodoro
+    #
+
+    AggregatedPomodoro:
+      type: array
+      items:
+        type: object
+        properties:
+          time:
+            type: integer
+          project_id:
+            type: integer
+
+    PomodoroLogStarted:
+      type: object
+      properties:
+        id:
+          type: integer
+        start:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        project_id:
+          type: integer
+        parent_project_id:
+          type: integer
+
+    PomodoroLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        project_id:
+          type: integer
+        parent_project_id:
+          type: integer
+      required:
+        - start
+        - todo_id
+        - project_id
+
+    StartPomodoroBody:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        project_id:
+          type: integer
+        parent_project_id:
+          type: integer
+      required:
+        - start
+        - todo_id
+
+    EndPomodoroBody:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+      required:
+        - end
+        - todo_id
+
+    #
+    # /records
+    #
+
+    Scheme:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        sum_graph:
+          type: boolean
+        project_id:
+          type: integer
+
+    SchemeRecordEmbed:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        sum_graph:
+          type: boolean
+        project_id:
+          type: integer
+        records:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/RecordChangelogEmbed"
+              - $ref: "#/components/schemas/Record"
+
+    CreateSchemeBody:
+      type: object
+      properties:
+        name:
+          type: string
+        sum_graph:
+          type: boolean
+        project_id:
+          type: integer
+      required:
+        - name
+
+    UpdateSchemeBody:
+      type: object
+      properties:
+        name:
+          type: string
+        sum_graph:
+          type: boolean
+        project_id:
+          type: integer
+
+    Record:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: number
+        datetime:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        scheme_id:
+          type: integer
+      required:
+        - id
+        - value
+        - datetime
+        - scheme_id
+
+    RecordChangelogEmbed:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: number
+        changelog:
+          $ref: "#/components/schemas/ChangelogOnlyTextAndId"
+        datetime:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        scheme_id:
+          type: integer
+      required:
+        - id
+        - value
+        - datetime
+        - scheme_id
+
+    CreateRecordBody:
+      type: object
+      properties:
+        value:
+          type: number
+        changelog:
+          type: string
+        datetime:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        scheme_id:
+          type: integer
+      required:
+        - value
+        - datetime
+        - scheme_id
+
+    CreateMultipleRecordBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: number
+              changelog:
+                type: string
+              datetime:
+                type: string
+                format: date-time
+              scheme_id:
+                type: integer
+            required:
+              - value
+              - datetime
+              - scheme_id
+        todo_id:
+          type: integer
+      required:
+        - records
+
+    UpdateRecordBody:
+      type: object
+      properties:
+        value:
+          type: number
+        datetime:
+          type: string
+          format: date-time
+
+    UpdateMultipleRecordBody:
+      type: array
+      items:
+        type: object
+        properties:
+          scheme_id:
+            type: integer
+          value:
+            type: number
+          changelog:
+            type: string
+          datetime:
+            type: string
+            format: date-time
+        required:
+          - scheme_id
+          - value
+          - datetime
+
+    Changelog:
+      type: object
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        datetime:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        scheme_id:
+          type: integer
+
+    ChangelogOnlyTextAndId:
+      type: object
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+
+    CreateChangelogBody:
+      type: object
+      properties:
+        text:
+          type: string
+        datetime:
+          type: string
+          format: date-time
+        todo_id:
+          type: integer
+        scheme_id:
+          type: integer
+      required:
+        - text
+        - datetime
+        - scheme_id
+
+    UpdateChangelogBody:
+      type: object
+      properties:
+        text:
+          type: string
+        datetime:
+          type: string
+          format: date-time
+        scheme_id:
+          type: integer
+
+    #
+    # /documents
+    #
+
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+        project_id:
+          type: integer
+
+    CreateDocumentBody:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        project_id:
+          type: integer
+      required:
+        - title
+        - url
+
+    UpdateDocumentBody:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        project_id:
+          type: integer
+
+  requestBodies:
+    #
+    # /users
+    #
+
+    Login:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LoginBody"
+
+    CreateUser:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateUserBody"
+
+    UpdateUser:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateUserBody"
+
+    OAuth2Connect:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OAuth2ConnectBody"
+
+    CreateUserOverOauth2:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateUserOverOauth2Body"
+
+    #
+    # /projects
+    #
+
+    CreateProject:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateProjectBody"
+
+    UpdateProject:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateProjectBody"
+
+    #
+    # /sprints
+    #
+
+    CreateSprint:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateSprintBody"
+
+    UpdateSprint:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateSprintBody"
+
+    #
+    # /todos
+    #
+
+    CreateTodo:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateTodoBody"
+
+    UpdateTodo:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateTodoBody"
+
+    #
+    # /pomodoro
+    #
+
+    StartPomodoro:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/StartPomodoroBody"
+
+    EndPomodoro:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EndPomodoroBody"
+
+    #
+    # /records
+    #
+
+    CreateScheme:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateSchemeBody"
+
+    UpdateScheme:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateSchemeBody"
+
+    CreateRecords:
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/CreateRecordBody"
+              - $ref: "#/components/schemas/CreateMultipleRecordBody"
+
+    UpdateRecords:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateMultipleRecordBody"
+
+    UpdateRecord:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateRecordBody"
+
+    CreateChangelog:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateChangelogBody"
+
+    UpdateChangelog:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateChangelogBody"
+
+    #
+    # /documents
+    #
+
+    CreateDocument:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateDocumentBody"
+
+    UpdateDocument:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateDocumentBody"
+
+  parameters:
+    #
+    # Global
+    #
+
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+    project_id:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+
+    start:
+      name: start
+      in: query
+      schema:
+        type: string
+        format: date-time
+
+    end:
+      name: end
+      in: query
+      schema:
+        type: string
+        format: date-time
+
+    todo_id:
+      name: todo_id
+      in: query
+      schema:
+        type: integer
+
+    #
+    # /users
+    #
+
+    oauth_providers:
+      name: oauth_providers
+      in: path
+      required: true
+      schema:
+        type: string
+        enum:
+          - github
+          - google
+          - twitter
+
+    #
+    # /projects
+    #
+
+    show_hidden:
+      name: show_hidden
+      in: query
+      schema:
+        type: boolean
+        default: false
+    embed:
+      name: embed
+      in: query
+      schema:
+        type: string
+        enum:
+          - sub_projects
+
+    #
+    # /sprints
+    #
+
+    #
+    # /todos
+    #
+
+    with_completed:
+      name: with_completed
+      in: query
+      schema:
+        type: boolean
+        default: false
+
+    with_repeat_schedules:
+      name: with_repeat_schedules
+      in: query
+      schema:
+        type: boolean
+        default: false
+
+    #
+    # /pomodoro
+    #
+
+    include_sub_project:
+      name: include_sub_project
+      in: query
+      schema:
+        type: boolean
+
+    aggregation_range:
+      name: aggregation_range
+      in: query
+      schema:
+        type: string
+        enum:
+          - hour
+          - day
+          - week
+          - month
+          - year
+
+    aggregate_sub_project:
+      name: aggregate_sub_project
+      in: query
+      schema:
+        type: boolean
+
+    #
+    # /records
+    #
+
+    scheme_id:
+      name: scheme_id
+      in: query
+      schema:
+        type: integer
+
+    todo_id_required:
+      name: todo_id
+      in: query
+      required: true
+      schema:
+        type: integer
+
+    scheme_embed:
+      name: embed
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - records
+            - record.changelog
+
+    record_embed:
+      name: embed
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - changelog
+
+    #
+    # /documents
+    #
+
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Credentials or access token for API
