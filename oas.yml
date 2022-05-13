@@ -1271,6 +1271,7 @@ components:
           example: 42a5f5
         parent_id:
           type: integer
+          nullable: true
         pinned:
           type: boolean
         order:
@@ -1327,6 +1328,7 @@ components:
           type: string
         description:
           type: string
+          nullable: true
         start:
           type: string
           format: date
@@ -1335,6 +1337,7 @@ components:
           format: date
         project_id:
           type: integer
+          nullable: true
 
     #
     # /todos
@@ -1392,6 +1395,7 @@ components:
                     type: string
                     pattern: '^\d{2}:\d{2}$'
                     example: "09:00"
+
     RepeatSchedule:
       type: object
       properties:
@@ -1476,19 +1480,25 @@ components:
           type: string
         description:
           type: string
+          nullable: true
         date:
           type: string
           format: date
+          nullable: true
         time:
           type: string
           pattern: '^\d{2}:\d{2}$'
           example: "09:00"
+          nullable: true
         execution_time:
           type: integer
+          nullable: true
         sprint_id:
           type: integer
+          nullable: true
         project_id:
           type: integer
+          nullable: true
         completed:
           type: boolean
           default: false
@@ -1498,6 +1508,7 @@ components:
             until:
               type: string
               format: date
+              nullable: true
             unit:
               type: string
               enum:
@@ -1507,6 +1518,7 @@ components:
               default: day
             every_other:
               type: integer
+              nullable: true
             days:
               type: array
               items:
@@ -1519,6 +1531,8 @@ components:
                   time:
                     type: string
                     pattern: '^\d{2}:\d{2}$'
+                nullable: true
+          nullable: true
 
     #
     # /pomodoro
@@ -1654,6 +1668,7 @@ components:
           type: boolean
         project_id:
           type: integer
+          nullable: true
 
     Record:
       type: object
