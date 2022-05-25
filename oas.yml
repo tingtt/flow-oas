@@ -25,7 +25,7 @@ paths:
     post:
       security: []
       requestBody:
-        $ref: "#/components/requestBodies/CreateUser"
+        $ref: "#/components/requestBodies/CreateUserBody"
       responses:
         201:
           description: Created
@@ -57,7 +57,7 @@ paths:
 
     patch:
       requestBody:
-        $ref: "#/components/requestBodies/UpdateUser"
+        $ref: "#/components/requestBodies/UpdateUserBody"
       responses:
         200:
           description: Success
@@ -91,7 +91,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/oauth_providers"
       requestBody:
-        $ref: "#/components/requestBodies/OAuth2Connect"
+        $ref: "#/components/requestBodies/OAuth2ConnectBody"
       responses:
         201:
           description: Created
@@ -107,7 +107,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/oauth_providers"
       requestBody:
-        $ref: "#/components/requestBodies/CreateUserOverOauth2"
+        $ref: "#/components/requestBodies/CreateUserOverOauth2Body"
       responses:
         200:
           description: Success
@@ -143,7 +143,7 @@ paths:
   /users/sign_in:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/Login"
+        $ref: "#/components/requestBodies/LoginBody"
       responses:
         200:
           description: Success
@@ -177,7 +177,7 @@ paths:
   /projects/:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateProject"
+        $ref: "#/components/requestBodies/CreateProjectBody"
       responses:
         201:
           description: Created
@@ -244,7 +244,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateProject"
+        $ref: "#/components/requestBodies/UpdateProjectBody"
       responses:
         200:
           description: Success
@@ -281,7 +281,7 @@ paths:
   /sprints/:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateSprint"
+        $ref: "#/components/requestBodies/CreateSprintBody"
       responses:
         201:
           description: Created
@@ -344,7 +344,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateSprint"
+        $ref: "#/components/requestBodies/UpdateSprintBody"
       responses:
         200:
           description: Success
@@ -381,7 +381,7 @@ paths:
   /todos/:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateTodo"
+        $ref: "#/components/requestBodies/CreateTodoBody"
       responses:
         201:
           description: Created
@@ -448,7 +448,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateTodo"
+        $ref: "#/components/requestBodies/UpdateTodoBody"
       responses:
         200:
           description: Success
@@ -527,7 +527,7 @@ paths:
   /pomodoro/start:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/StartPomodoro"
+        $ref: "#/components/requestBodies/StartPomodoroBody"
       responses:
         201:
           description: Created
@@ -547,7 +547,7 @@ paths:
   /pomodoro/end:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/EndPomodoro"
+        $ref: "#/components/requestBodies/EndPomodoroBody"
       responses:
         201:
           description: Created
@@ -621,7 +621,7 @@ paths:
   /records/:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateRecords"
+        $ref: "#/components/requestBodies/CreateRecordsBody"
       responses:
         201:
           description: Created
@@ -648,7 +648,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/todo_id_required"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateRecords"
+        $ref: "#/components/requestBodies/UpdateRecordsBody"
       responses:
         200:
           description: Success
@@ -721,7 +721,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateRecord"
+        $ref: "#/components/requestBodies/UpdateRecordBody"
       responses:
         200:
           description: Success
@@ -756,7 +756,7 @@ paths:
   /records/changelogs:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateChangelog"
+        $ref: "#/components/requestBodies/CreateChangelogBody"
       responses:
         201:
           description: Created
@@ -813,7 +813,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateChangelog"
+        $ref: "#/components/requestBodies/UpdateChangelogBody"
       responses:
         200:
           description: Success
@@ -848,7 +848,7 @@ paths:
   /records/schemes:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateScheme"
+        $ref: "#/components/requestBodies/CreateSchemeBody"
       responses:
         201:
           description: Created
@@ -921,7 +921,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateScheme"
+        $ref: "#/components/requestBodies/UpdateSchemeBody"
       responses:
         200:
           description: Success
@@ -960,7 +960,7 @@ paths:
   /documents/:
     post:
       requestBody:
-        $ref: "#/components/requestBodies/CreateDocument"
+        $ref: "#/components/requestBodies/CreateDocumentBody"
       responses:
         201:
           description: Created
@@ -1021,7 +1021,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/id"
       requestBody:
-        $ref: "#/components/requestBodies/UpdateDocument"
+        $ref: "#/components/requestBodies/UpdateDocumentBody"
       responses:
         200:
           description: Success
@@ -1880,31 +1880,31 @@ components:
     # /users
     #
 
-    Login:
+    LoginBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/LoginBody"
 
-    CreateUser:
+    CreateUserBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateUserBody"
 
-    UpdateUser:
+    UpdateUserBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/UpdateUserBody"
 
-    OAuth2Connect:
+    OAuth2ConnectBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/OAuth2ConnectBody"
 
-    CreateUserOverOauth2:
+    CreateUserOverOauth2Body:
       content:
         application/json:
           schema:
@@ -1914,13 +1914,13 @@ components:
     # /projects
     #
 
-    CreateProject:
+    CreateProjectBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateProjectBody"
 
-    UpdateProject:
+    UpdateProjectBody:
       content:
         application/json:
           schema:
@@ -1930,13 +1930,13 @@ components:
     # /sprints
     #
 
-    CreateSprint:
+    CreateSprintBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateSprintBody"
 
-    UpdateSprint:
+    UpdateSprintBody:
       content:
         application/json:
           schema:
@@ -1946,13 +1946,13 @@ components:
     # /todos
     #
 
-    CreateTodo:
+    CreateTodoBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateTodoBody"
 
-    UpdateTodo:
+    UpdateTodoBody:
       content:
         application/json:
           schema:
@@ -1962,13 +1962,13 @@ components:
     # /pomodoro
     #
 
-    StartPomodoro:
+    StartPomodoroBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/StartPomodoroBody"
 
-    EndPomodoro:
+    EndPomodoroBody:
       content:
         application/json:
           schema:
@@ -1978,19 +1978,19 @@ components:
     # /records
     #
 
-    CreateScheme:
+    CreateSchemeBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateSchemeBody"
 
-    UpdateScheme:
+    UpdateSchemeBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/UpdateSchemeBody"
 
-    CreateRecords:
+    CreateRecordsBody:
       content:
         application/json:
           schema:
@@ -1998,25 +1998,25 @@ components:
               - $ref: "#/components/schemas/CreateRecordBody"
               - $ref: "#/components/schemas/CreateMultipleRecordBody"
 
-    UpdateRecords:
+    UpdateRecordsBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/UpdateMultipleRecordBody"
 
-    UpdateRecord:
+    UpdateRecordBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/UpdateRecordBody"
 
-    CreateChangelog:
+    CreateChangelogBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateChangelogBody"
 
-    UpdateChangelog:
+    UpdateChangelogBody:
       content:
         application/json:
           schema:
@@ -2026,13 +2026,13 @@ components:
     # /documents
     #
 
-    CreateDocument:
+    CreateDocumentBody:
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateDocumentBody"
 
-    UpdateDocument:
+    UpdateDocumentBody:
       content:
         application/json:
           schema:
