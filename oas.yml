@@ -49,7 +49,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserWithoutPassword"
         404:
           description: Not found
         500:
@@ -1089,24 +1089,12 @@ components:
       required:
         - email
         - password
+
     TokenBody:
       type: object
       properties:
         token:
           type: string
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
 
     UserWithoutPassword:
       type: object
@@ -1214,6 +1202,10 @@ components:
         hidden:
           type: boolean
           default: false
+      required:
+        - id
+        - name
+        - theme_color
 
     ProjectSubEmbed:
       type: object
@@ -1239,6 +1231,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Project"
+      required:
+        - id
+        - name
+        - theme_color
+        - sub_projects
 
     CreateProjectBody:
       type: object
@@ -1300,6 +1297,11 @@ components:
           format: date
         project_id:
           type: integer
+      required:
+        - id
+        - name
+        - start
+        - end
 
     CreateSprintBody:
       type: object
@@ -1395,6 +1397,14 @@ components:
                     type: string
                     pattern: '^\d{2}:\d{2}$'
                     example: "09:00"
+                required:
+                  - day
+          required:
+            - unit
+      required:
+        - id
+        - name
+        - completed
 
     RepeatSchedule:
       type: object
@@ -1421,6 +1431,10 @@ components:
         completed:
           type: boolean
           default: false
+      required:
+        - original_id
+        - name
+        - date
 
     CreateTodoBody:
       type: object
@@ -1470,6 +1484,10 @@ components:
                     type: string
                     pattern: '^\d{2}:\d{2}$'
                     example: "09:00"
+                required:
+                  - day
+          required:
+            - unit
       required:
         - name
 
@@ -1547,6 +1565,8 @@ components:
             type: integer
           project_id:
             type: integer
+        required:
+          - time
 
     PomodoroLogStarted:
       type: object
@@ -1562,6 +1582,9 @@ components:
           type: integer
         parent_project_id:
           type: integer
+      required:
+        - id
+        - start
 
     PomodoroLog:
       type: object
@@ -1581,6 +1604,7 @@ components:
         parent_project_id:
           type: integer
       required:
+        - id
         - start
         - todo_id
         - project_id
@@ -1628,6 +1652,10 @@ components:
           type: boolean
         project_id:
           type: integer
+      required:
+        - id
+        - name
+        - sum_graph
 
     SchemeRecordEmbed:
       type: object
@@ -1646,6 +1674,10 @@ components:
             oneOf:
               - $ref: "#/components/schemas/RecordChangelogEmbed"
               - $ref: "#/components/schemas/Record"
+      required:
+        - id
+        - name
+        - sum_graph
 
     CreateSchemeBody:
       type: object
@@ -1799,6 +1831,11 @@ components:
           type: integer
         scheme_id:
           type: integer
+      required:
+        - id
+        - text
+        - datetime
+        - scheme_id
 
     ChangelogOnlyTextAndId:
       type: object
@@ -1807,6 +1844,9 @@ components:
           type: integer
         text:
           type: string
+      required:
+        - id
+        - text
 
     CreateChangelogBody:
       type: object
@@ -1851,6 +1891,11 @@ components:
           type: string
         project_id:
           type: integer
+      required:
+        - id
+        - name
+        - url
+        - project_id
 
     CreateDocumentBody:
       type: object
@@ -1864,6 +1909,7 @@ components:
       required:
         - title
         - url
+        - project_id
 
     UpdateDocumentBody:
       type: object
