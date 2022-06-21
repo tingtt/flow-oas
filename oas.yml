@@ -32,7 +32,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserWithoutPassword"
+                $ref: "#/components/schemas/UserWithToken"
         400:
           description: Invalid request
         415:
@@ -49,7 +49,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserWithoutPassword"
+                $ref: "#/components/schemas/User"
         404:
           description: Not found
         500:
@@ -64,7 +64,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserWithoutPassword"
+                $ref: "#/components/schemas/User"
         400:
           description: Invalid request
         404:
@@ -98,7 +98,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserWithoutPassword"
+                $ref: "#/components/schemas/User"
         500:
           description: Internal server error
 
@@ -1096,7 +1096,7 @@ components:
         token:
           type: string
 
-    UserWithoutPassword:
+    User:
       type: object
       properties:
         id:
@@ -1106,6 +1106,29 @@ components:
         email:
           type: string
           format: email
+      required:
+        - id
+        - name
+        - email
+
+    UserWithToken:
+      type: object
+      properties:
+        id:
+          type: number
+          minimum: 1
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        token:
+          type: string
+      required:
+        - id
+        - name
+        - email
+        - token
 
     CreateUserBody:
       type: object
@@ -1175,6 +1198,8 @@ components:
       properties:
         id:
           type: integer
+      required:
+        - id
 
     #
     # /projects
