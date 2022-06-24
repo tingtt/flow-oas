@@ -14,6 +14,12 @@ info:
 security:
   - Bearer: []
 
+servers:
+  - url: http://localhost:3000
+    description: development
+  - url: https://flow.tingtt.jp/api
+    description: production
+
 tags: []
 
 paths:
@@ -608,7 +614,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AggregatedPomodoro"
+                oneOf:
+                  - $ref: "#/components/schemas/AggregatedPomodoro"
+                  - $ref: "#/components/schemas/AggregatedPomodoroWithDatetime"
         400:
           description: Invalid request
         500:
@@ -1592,6 +1600,22 @@ components:
             type: integer
         required:
           - time
+
+    AggregatedPomodoroWithDatetime:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              time:
+                type: integer
+              project_id:
+                type: integer
+        datetime:
+          type: string
+          format: date-time
 
     PomodoroLogStarted:
       type: object
