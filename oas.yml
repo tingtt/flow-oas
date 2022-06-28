@@ -615,8 +615,12 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/AggregatedPomodoro"
-                  - $ref: "#/components/schemas/AggregatedPomodoroWithDatetime"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/AggregatedPomodoro"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/AggregatedByProjectPomodoro"
         400:
           description: Invalid request
         500:
@@ -1590,32 +1594,26 @@ components:
     #
 
     AggregatedPomodoro:
-      type: array
-      items:
-        type: object
-        properties:
-          time:
-            type: integer
-          project_id:
-            type: integer
-        required:
-          - time
-
-    AggregatedPomodoroWithDatetime:
       type: object
       properties:
-        data:
+        time:
+          type: integer
+        project_id:
+          type: integer
+      required:
+        - time
+
+    AggregatedByProjectPomodoro:
+      type: object
+      properties:
+        times:
           type: array
           items:
-            type: object
-            properties:
-              time:
-                type: integer
-              project_id:
-                type: integer
-        base_time:
-          type: string
-          format: date-time
+            type: integer
+        project_id:
+          type: integer
+      required:
+        - times
 
     PomodoroLogStarted:
       type: object
