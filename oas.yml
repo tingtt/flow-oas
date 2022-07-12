@@ -211,6 +211,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/show_hidden"
         - $ref: "#/components/parameters/embed"
+        - $ref: "#/components/parameters/name"
       responses:
         200:
           description: Success
@@ -2200,6 +2201,11 @@ components:
     # /projects
     #
 
+    name:
+      name: name
+      in: query
+      schema:
+        type: string
     show_hidden:
       name: show_hidden
       in: query
